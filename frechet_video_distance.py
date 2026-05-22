@@ -54,7 +54,9 @@ def get_activations(data, model, batch_size=10):
     activations = []
     print("Calculating activations...")
     for batch in batch_generator(data, batch_size):
-        activations.append(model(batch).squeeze().detach().cpu().float().numpy())
+        batch_activations = model(batch).detach().cpu().float()
+        batch_activations = batch_activations.reshape(batch_activations.shape[0], -1)
+        activations.append(batch_activations.numpy())
     return np.vstack(activations)
 
 
